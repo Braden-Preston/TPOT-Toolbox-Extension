@@ -1,0 +1,52 @@
+{
+  "name": "__MSG_appName__",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "__MSG_appDescription__",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "128": "icons/icon-128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "scripts/livereload.js",
+      "scripts/background.js"
+    ]
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "notifications",
+    "ws://localhost:8097/*",
+    "http://localhost/*",
+    "ws://localhost:8097/*",
+    "*://*/*"
+  ],
+  "content_security_policy": "script-src 'self' https://localhost:8097/; connect-src 'self' ws://localhost:35729/livereload ws://localhost:8097 ; object-src 'self' https://localhost:8097/",
+  "options_ui": {
+    "page": "options.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "scripts/contentscript.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/icon-19.png",
+      "38": "icons/icon-38.png"
+    },
+    "default_title": "Extension Boilerplate",
+    "default_popup": "popup.html"
+  }
+}
+
+
