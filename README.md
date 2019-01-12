@@ -13,7 +13,7 @@
 
 </div>
 
-# Getting Started
+## Getting Started
 
 > __*Welcome!*__ If have never used Toolbox, begin with [How to Install](#how-to-install) & [Basic Usage](#basic-usage). If you have already installed the extension to your browser(s), then check out the [Features](#features) section to see what tools you can enable and how to use them!
 
@@ -51,7 +51,7 @@
 
 ##### [[back to menu]](#getting-started)
 
-# How to Install
+## How to Install
 
 
 
