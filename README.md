@@ -20,16 +20,6 @@
 
 - [__What's New?__](#whats-new?)
 - [__How to Install__](#how-to-install)
-  - [__What is an 'Extension'?__](#what-is-an-extension)
-  - [__What Browser do I have?__](#what-browser-do-i-have)
-    - [__Chrome How-to__](#chrome-how-to)
-    - [__Firefox How-to__](#firefox-how-to)
-    - [__Opera How-to__](#opera-how-to)
-  - [__Basic Usage__](#basic-usage)
-    - [__Signing Into TPOT CLoud__](#signing-into-tpot-cloud)
-    - [__Example: Adding a Highlight__](#basic-example)
-    - [__Can I Use this on Mobile?__](#can-i-use-this-on-mobile)
-  - [__I need help...__](#i-need-helpl)
 - [__Features__](#features)
   - [__What are Tools?__](#what-are-tools)
   - [__Settings__](#settings)
@@ -50,50 +40,172 @@
   - Toolbox now updated to support Firefox.
   - Support for Firefox Mobile and Opera will be added soon.
 
-##### [[back to menu]](#getting-started)
+##### [[back to Main Menu]](#getting-started)
+
+---
 
 ## How to Install
 
+- [__What is an 'Extension'?__](#what-is-an-extension)
+- [__Is it Safe?__](#is-it-safe)
+- [__Installation__](#installation)
+  - [__Can I use this on Mobile?__](#can-i-use-this-on-mobile)
+  - [__What Browser do I have?__](#what-browser-do-i-have)
+  - [__Chrome__](#install-on-chrome)
+  - [__Firefox__](#install-on-firefox)
+  - [__Opera__](#install-on-opera)
+  - [__Android__](#install-on-firefox-for-android)
+- [__Basic Usage__](#basic-usage)
+  - [__Signing Into TPOT CLoud__](#signing-into-tpot-cloud)
+  - [__Example: Adding a Highlight__](#example-adding-a-highlight)
+- [__I Need Help...__](#i-need-help)
+
+##### [[back to Main Menu]](#getting-started)
+
+### What is an Extension?
+
+An `extension` is an app that adds additional features to your `internet browser`. They make the user experience more helpful and enjoyable by accomplishing small tasks that would otherwise not be provided by your browser or the webpage you are visiting. A good example of what an `extension` is is [Grammarly](), which checks spelling as you type on a webpage.
+
+> Although most browsers call these apps `extensions`, there are some like Firefox that call them `addons`. Both terms may be used interchangably.
+
+TPOT Toolbox is an extension that adds some new [features]() for the webpages you already visit, like __thepathoftruth__, __facebook__, __gmail__, and others. One of first features we added was the abilty to highlight and save important quotes when you are visiting __thepathoftruth__. We will show you how to do this in just a moment in our [basic example]()
+
+##### [[back to How to Install]](#how-to-install)
+
+### __Is it safe?__
+
+> "I heard on the news that browsers extensions are unsafe and are providing access to user's personal information and violating their privacy"
+
+This is true! Every once in a while you hear of an exploit like this occuring. Sites like Facebook are unappologetically "sniffing" the other tabs you have open - looking for personal information to feed on. You can read about it [here]().
+
+Ironically, there is a solution for this problem, an extension called [Facebook Container]() on the Firefox Store.
+
+> "What is this happening and is there a solution?"
+
+The problem is that in order for extensions to provide a better user experience, they may have to access bits of information while you are browsing. This may include reading text off the webpage you are visiting, managing your bookmarks and viewing your internet history. Providers like Chrome and Firefox have what is called an `API`, which is a bridge between your browser and the webpages you visit. 
+
+The very good news is this `API` is limited. It can only do what it is programmed to do. When you install an extension, you will be prompted with the list of `permissions` that will be allowed by the user, similar to installing an app on iPhone or Android. Some of these `permissions` are optional and can be turned off at any time through [settings](). Others are required, but you have to give consent to allow the extension to use them.
+
+> "What are you doing to ensure that my data privacy is respected"
+
+We want to do the absolute best and nothing less when it comes to data privacy. Below is only part of what we are doing to ensure a totally safe and respectful browsing extension.
+
+__Permissions__
+
+- While developing Toolbox we have worked with only the minimum required permissions. As much as possible, we have tried to make certain permissions optional for the user, so that they are in full control of what the extension is allowed to do. But this is not extensionspecific, it is tool-specific. Certain tools will have access to different permissions. When you install Toolbox, you are not required to enable every tool. So you control what is enabled and what is not. You can control this in your settings page, which will tell you what each extension is allowed to do. You are in control.
+
+__Content Security Policy__
+
+- CSP's restrict a website or extension from loading content (script, images, video) from unapproved sources. Everything in Toolbox is locked down so that resources that are needed can only be loaded from an internal whitelist. All of these connections are secured via HTTPS and are 256 bit encrypted. No script is evaluated directly, but its origin is verified before it is ever ran. This protects you from malicious sites that may try to access your data.
+
+__"Sniffing"__
+
+- Unlike Facebook, we don't sniff the other tabs that are in your browser. This is actually tedious to do through the `api` as it is.
+
+__TPOT Cloud User Data__
+
+- When you [sign in for the first time](), you will create a new account for TPOT Cloud. This is a secure platform hosted by [Firebase](). It allows Toolbox to keep your settings synced between devices and store information that you have requested (like page highlights and notes). This data is only accessable to you through Toolbox when you are signed in. Nobody else can see it or download it without your credentials.
+
+- When you [create and account]() through Toolbox, you can sign up using another provider like Facebook. This login information is not visible and is encrypted.
+
+- Your user password is not even visible to TPOT Cloud, so when you are resetting or changing your password, it is not done by the system admin. You are totally secure.
+
+Most importantly, we offer TPOT Toolbox [open-source](), which means you can see all the code that was used to build the extension for yourself. We want you to be in the look and know exactly what you are installing on your system and how it affects your privacy.
+
+Since we are offering the codebase for free, if anyone feels like making a [contribution]() themselves, making a [suggestion for a new feature](), or [reporting an issue]() - we would really appreacite it.
+
+##### [[back to How to Install]](#how-to-install)
+
+---
+
+### Installation
+
+> If you aren't the most tech-savy person on the planet, then start with [What Browser do I have?](). Otherwise, if you already know what browser you have and are ready to install, then click on the appropriate link below.
+
+  - [__Chrome__](#install-on-chrome)
+  - [__Firefox__](#install-on-firefox)
+  - [__Opera__](#install-on-opera)
+
+### What Browser do I Have?
+
+Hopefully you already know this, but if you don't, don't worry! We have a solution for non-tech savy people! Click on [this link]() to find out what browser you are running (Chrome, Firefox, Opera, Safari, Edge, Internet Explorer), and then [scroll up a bit]() to see if we have an installation guide Toolbox available for your browser.
+
+### Can I use this on Mobile?
+
+Normally you would not be able to use extensions like Toolbox on your mobile device. Recently Firefox's mobile browser [Firefox for Android]() added support for browser extensions, but they are limited in what they can do. You can see how install Toolbox for Android and what features we have been able to port over to Firefox.
+
+  - [__Install Toolbox on Firefox for Android__](#install-on-firefox-for-android)
+
+##### [[back to How to Install]](#how-to-install)
+
+---
+
+### Install on Chrome
+
+1. Find Toolbox extension on the Chrome Webstore here:[https://chrome.google.com/webstore/category/extensions](https://chrome.google.com/webstore/category/extensions)
+
+2. Click `Add to Chrome`
+
+3. If your recieve a prompt for __Add "Toolbox"__ then click `Add Extension`
+
+You should now see a little button in your top toolbar with a red toolchest icon. You may also be navigated to another tab with a welcome screen and a login screen. Congradulations! You have installed Toolbox sucessfully. You are now ready to move onto the next step:
+
+[Basic Usage]()
+
+> If you weren't able to install the extension or something strange has happened let us know that you [need help](#i-need-help)!
+
+##### [[back to How to Install]](#how-to-install)
+
+---
+
+### Install on Firefox
 
 
-## Features
 
-<dl>
-  <dt>Write once and deploy to Chrome, Opera & Firefox</dt>
-  <dd>
-    Based on WebExtensions. It also includes a tiny polyfill to bring uniformity to the APIs exposed by different browsers.
-  </dd>
-</dl>
+##### [[back to How to Install]](#how-to-install)
 
-<dl>
-  <dt>Live-reload</dt>
-  <dd>
-    Your changes to CSS, HTML & JS files will be relayed instantly without having to manually reload the extension. This ends up saving a lot of time and improving the developer experience.
-  </dd>
-</dl>
+---
 
-<dl>
-  <dt>Sensible starting point</dt>
-  <dd>
-    This comes with a gulp based workflow that converts modern <strong>ES6</strong> JavaScript and <strong>SCSS</strong> to JS/CSS. 
-    Scripts are transpiled using Babel and bundled using Browserify.
-    Sourcemaps are available for both JS and SCSS.
-  </dd>
-</dl>
+### Install on Opera
 
-<dl>
-  <dt>Sketch (.sketch) assets for icons and promo images</dt>
-  <dd>
-    A .sketch file is included in the resources directory. This has all the icons and promo images that will be needed while uploading the extensions to the app stores.
-  </dd>
-</dl>
 
-<dl>
-  <dt>Easily configurable and extendable</dt>
-  <dd>
-    The gulpfile is easily understandable and configurable. If you want to add additional tasks or remove un-used ones, you can easily tweak that file to suit your needs.
-  </dd>
-</dl>
+
+##### [[back to How to Install]](#how-to-install)
+
+---
+
+### Install on Firefox for Android
+
+
+
+##### [[back to How to Install]](#how-to-install)
+
+---
+
+### Basic Usage
+
+
+
+##### [[back to How to Install]](#how-to-install)
+
+### Signing into TPOT Cloud
+
+
+
+##### [[back to How to Install]](#how-to-install)
+
+### Example: Adding a Highlight
+
+
+
+##### [[back to How to Install]](#how-to-install)
+
+### I Need Help...
+
+
+
+##### [[back to How to Install]](#how-to-install)
+
 
 <dl>
   <dt>Platform specific & Environment specific variables.</dt>
