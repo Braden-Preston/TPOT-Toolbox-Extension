@@ -25,7 +25,7 @@ export default class session {
     //
     // Mobx Messaging Observables 
     //
-    
+
     @observable port = {};
     @observable portType = 'master'
 
@@ -65,27 +65,53 @@ export default class session {
     // Primary Store Managmement Functions
     //
 
-    // MASTER - Calls action on Master and provides new state to Remotes
+    // MASTER - Calls action on Master state with payloads
     @action reduce = (action, payload, tabID) => {
         try {
             // Call the action on the Master store's state
-            this[action](payload, tabID)
+            if (!!payload && typeof payload == 'string') {
+                this[action](payload, tabID)
+            } else {
+                this[action]({ action, ...payload, tabID })
+            }
         } catch (error) {
             console.error(`Could not Call: ${action}()`, error)
-        } finally {
+        }
+    }
+
+    // MASTER - Provides new state to Remotes from Master
+    @action notify = (action, property, value, tabID) => {
+        if (!!tabID) {
+            this.port[tabID] && this.port[tabID].postMessage({ action, payload: { property, value: toJS(value) } });
+            this.printCalledAction(action, property, tabID)
+        } else {
             const channels = []
-            if (action === 'createStore' && action === 'reloadStore') {
-                this.printCalledAction(action, payload, tabID)
-            } else {
-                // Make call to active ports to rehydrate state on all Remotes
-                for (const key in this.port) {
-                    if (this.port.hasOwnProperty(key)) {
-                        this.port[key].postMessage({ action, payload: { property: payload, value: this[payload]} });
-                        channels.push(key)
-                    }
+            for (const key in this.port) {
+                if (this.port.hasOwnProperty(key)) {
+                    this.port[key].postMessage({ action, payload: { property, value: toJS(value) } });
+                    this.port[key] && channels.push(key)
                 }
-                this.printCalledAction(action, payload, channels)
             }
+            this.printCalledAction(action, property, channels.toString())
+        }
+    }
+
+    // REMOTE - Receives updates from Master and creates Remote state changes
+    @action rehydrate = (action, payload) => {
+        try {
+            var updates = [payload]
+            if (Array.isArray(payload.value) && !!payload.value[0].property) {
+                var updates = payload.value
+            }
+            let props = []
+            updates.map((update) => {
+                this[update.property] = update.value
+                props.push(update.property)
+            })
+            props = { property: props.toString() }
+            this.printRehydratedState(action, props)
+        } catch (error) {
+            this.printRehydratedStateFailed(action, payload, error)
         }
     }
 
@@ -95,40 +121,19 @@ export default class session {
         this.printDispatchedAction(action, payload)
     }
 
-    // REMOTE - Receives updates from Master and creates Remote state changes
-    @action rehydrate = (action, payload) => {
-        try {
-            if (Array.isArray(payload)) {
-                let props = []
-                payload.map((update)=>{
-                    this[update.property] = update.value
-                    props.push(update.property)
-                })
-                props = {property: props}
-                this.printRehydratedState(action, props)
-            } else {
-                this[payload.property] = payload.value
-                this.printRehydratedState(action, payload)
-            }
-        } catch (error) {
-            this.printRehydratedStateFailed(action, payload, error)
-        }
-    }
-
     //
     // Auxilliary Store Managmement Functions
     //
 
-    @action createStore = (payload, tabID) => {
-        // console.log(tabID, toJS(this.port[tabID]).sender.tab.id)
+    @action createStore = (payload) => {
         let props = Object.keys(this)
         let state = []
         props.map((prop) => {
-            if (prop !== 'port' && prop !== 'portType' && typeof this[prop] !== 'function' ) {
-                state.push({ property: prop, value: this[prop] })
+            if (prop !== 'port' && prop !== 'portType' && typeof this[prop] !== 'function') {
+                state.push({ property: prop, value: toJS(this[prop]) })
             }
         })
-        this.port[tabID].postMessage({ action: 'createStore', payload: state });
+        this.notify(`createStore`, 'state', state, payload.tabID)
     }
 
     @action disconnectPort = (tab) => {
@@ -138,22 +143,20 @@ export default class session {
         console.log(`%c[background]     Remaining Ports: %c ${remaining}`, 'color: goldenrod;', 'color: unset;')
     }
 
-    // port disconnect
-
     //
     // Message Printing Utilities
     //
 
     printMasterConnected = (tabID) => {
-        console.log(`%c[background] <=> Connected to Remote [content:${tabID}]`, green)
+        console.log(`%c[background] <=> Connected to Remote [content:${tabID}]`, gold)
     }
 
     printRemoteConnected = () =>
         console.log(`%c[content] <=> Connected to Master`, green)
-    
+
     printRecievedAction = (action, payload, tabID) => {
         console.log(`%c[background] <-- Recieved Action from [content:${tabID}]: %c ${action}()`, orange, clear)
-        !!payload && console.log('%c                 Payload: ', orange, payload)
+        !!payload && console.log('%c                 Payload: ', orange, payload.property)
     }
 
     printDispatchedAction = (action, payload) => {
@@ -163,16 +166,16 @@ export default class session {
 
     printRehydratedState = (action, payload) => {
         console.log(`%c[content] <-- Rehydrated state after: %c ${action}()`, orange, clear)
-        console.log(`%c              Updated: %c ${payload.property}`, orange, clear)
+        console.log(`%c              Updated: `, orange, payload.property)
     }
 
-    printRehydratedStateFailed = (action, state, error) => 
+    printRehydratedStateFailed = (action, state, error) =>
         console.error(`%c[content] <-- Failed to Hydrate: %c ${action}()`, orange, clear, error)
 
     printCalledAction = (action, payload, channels) => {
-            console.log(`%c[background] --> Called Action %c ${action}()`, blue, clear)
-            !!payload && console.log(`%c                 Payload: `, blue, payload)
-            console.log(`%c                 Channel: %c ${channels}`, blue, clear)
+        console.log(`%c[background] --> Called Action %c ${action}()`, blue, clear)
+        !!payload && console.log(`%c                 Payload: `, blue, payload)
+        console.log(`%c                 Channel: %c ${channels}`, blue, clear)
     }
 
     ///////////////////////////////////////////
@@ -181,19 +184,33 @@ export default class session {
 
     @observable language = "en_US";
     @observable highlighter = true;
+    @observable whitelist = [
+        'www.thepathoftruth.com',
+        'www.facebook.com',
+        'www.videocopilot.net'
+    ]
 
     ///////////////////////////////////////////
     //      Actions, Computed, AutoRun       //
     ///////////////////////////////////////////
 
-    @action toggleBoolean = (name) => {
-        this[name] = !this[name]
-        // console.log('toggled')
-        // console.log('bool', this[name])
+    @action toggleBoolean = (property) => {
+        this[property] = !this[property]
+        this.notify('toggleBoolean', property, this[property])
     }
 
-    @action setString = (name, payload) => {
-        this[name] = payload
+    @action setString = (payload) => {
+        this[payload.property] = payload.value
+    }
+
+    @action toggleEntry = (payload) => {
+        if (this[payload.property].includes(payload.value)) {
+            this[payload.property] = this[payload.property].filter((value) => value !== payload.value);
+            this.notify(payload.action, payload.property, this[payload.property])
+        } else {
+            this[payload.property].push(payload.value)
+            this.notify(payload.action, payload.property, this[payload.property])
+        }
     }
 
     @computed get appIsInSync() {

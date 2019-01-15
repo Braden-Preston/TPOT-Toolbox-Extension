@@ -5,6 +5,9 @@ import Toolbox from './container/Toolbox.jsx'
 import React, {Fragment} from 'react'
 import ReactDOM from 'react-dom'
 
+import MobxStore from './stores'
+const store = new MobxStore()
+
 // var popup = document.getElementById("app");
 // storage.get('color', function(resp) {
 //   var color = resp.color;
@@ -14,7 +17,7 @@ import ReactDOM from 'react-dom'
 // });
 
 ReactDOM.render(
-  <h1>React Test</h1>
+  <button onClick={()=>{ store.session.dispatch('toggleEntry', {property: 'whitelist', value: window.location.hostname}) }}>React Test</button>
   , document.getElementById('display-container'));
 
 // var template = (data) => {

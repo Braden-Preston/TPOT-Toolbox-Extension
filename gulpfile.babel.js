@@ -36,7 +36,7 @@ var manifest = {
   firefox: {
     "applications": {
       "gecko": {
-        "id": "my-app-id@mozilla.org"
+        "id": "tpot-toolbox@mozilla.org"
       }
     },
     // "content_security_policy": "script-src 'self'; connect-src 'self' ws://localhost:35729/livereload ws://localhost:8097 ; object-src 'self' ",

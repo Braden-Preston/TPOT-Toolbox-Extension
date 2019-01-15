@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Boyah",
+    "message": "TPOT Toolbox",
     "description": "The name of the extension."
   },
   "appDescription": {
-    "message": "Boilerplate for building cross browser extensions",
+    "message": "A cross-browser extension platform that hosts multiple helpful utilities used by the PathofTruth community",
     "description": "The description of the extension."
   },
   "btnTooltip": {
